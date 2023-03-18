@@ -13,7 +13,13 @@ class TimerThread(QThread):
     def run(self):
         while True:
             self.time.sub_second()
+            self.signal_show.emit(self.time)
             time.sleep(1)
             # print(self.second)
-            self.signal_show.emit(self.time)
 
+    def set_time(self,hour,minute,second):
+        self.time.hour = hour
+        self.time.minute = minute
+        self.time.second = second
+
+    # def reset()

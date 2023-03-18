@@ -21,14 +21,14 @@ class MyTime:
         s_new = self.second + other.second
         m_new = self.minute + other.minute
         h_new = self.hour + other.hour
-        result = Time(h_new, m_new, s_new)
+        result = MyTime(h_new, m_new, s_new)
         return result
 
     def sub(self, other):
         s_new = self.second - other.second
         m_new = self.minute - other.minute
         h_new = self.hour - other.hour
-        result = Time(h_new, m_new, s_new)
+        result = MyTime(h_new, m_new, s_new)
         return result
 
     @staticmethod

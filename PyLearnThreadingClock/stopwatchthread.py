@@ -14,9 +14,9 @@ class StopWatchThread(QThread):
     def run(self):
         while True:
             self.time.add_second()
+            self.signal_show.emit(self.time)
             time.sleep(1)
             # print(self.second)
-            self.signal_show.emit(self.time)
         
     def reset(self):
         self.time.second = 0

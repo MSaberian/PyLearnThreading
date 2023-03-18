@@ -24,12 +24,90 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
       <string>World Clock</string>
      </attribute>
+     <widget class="QLabel" name="lb_tehran">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>60</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0:0:0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lb_tehran_2">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>60</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Tehran</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lb_tehran_3">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>90</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Berlin</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lb_berlin">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>90</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0:0:0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lb_tehran_5">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>120</y>
+        <width>71</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Washington</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lb_washington">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>120</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0:0:0</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
@@ -212,7 +290,7 @@
        <string>start</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="btn_reset_stopwatch_2">
+     <widget class="QPushButton" name="btn_reset_timer">
       <property name="geometry">
        <rect>
         <x>240</x>
@@ -225,7 +303,7 @@
        <string>rest</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="btn_stop_stopwatch_2">
+     <widget class="QPushButton" name="btn_stop_timer">
       <property name="geometry">
        <rect>
         <x>150</x>
