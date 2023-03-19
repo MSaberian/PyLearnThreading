@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QLabel, QLineEdit, QMainWindow,
-    QMenuBar, QPushButton, QSizePolicy, QStatusBar,
-    QTabWidget, QWidget)
+from PySide6.QtWidgets import (QApplication, QGridLayout, QLabel, QLineEdit,
+    QMainWindow, QMenuBar, QPushButton, QSizePolicy,
+    QStatusBar, QTabWidget, QTimeEdit, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -31,9 +31,39 @@ class Ui_MainWindow(object):
         self.tabWidget.setGeometry(QRect(30, 10, 391, 321))
         self.tab = QWidget()
         self.tab.setObjectName(u"tab")
+        self.lb_tehran = QLabel(self.tab)
+        self.lb_tehran.setObjectName(u"lb_tehran")
+        self.lb_tehran.setGeometry(QRect(180, 60, 49, 16))
+        self.lb_tehran_2 = QLabel(self.tab)
+        self.lb_tehran_2.setObjectName(u"lb_tehran_2")
+        self.lb_tehran_2.setGeometry(QRect(70, 60, 49, 16))
+        self.lb_tehran_3 = QLabel(self.tab)
+        self.lb_tehran_3.setObjectName(u"lb_tehran_3")
+        self.lb_tehran_3.setGeometry(QRect(70, 90, 49, 16))
+        self.lb_berlin = QLabel(self.tab)
+        self.lb_berlin.setObjectName(u"lb_berlin")
+        self.lb_berlin.setGeometry(QRect(180, 90, 49, 16))
+        self.lb_tehran_5 = QLabel(self.tab)
+        self.lb_tehran_5.setObjectName(u"lb_tehran_5")
+        self.lb_tehran_5.setGeometry(QRect(70, 120, 71, 16))
+        self.lb_washington = QLabel(self.tab)
+        self.lb_washington.setObjectName(u"lb_washington")
+        self.lb_washington.setGeometry(QRect(180, 120, 49, 16))
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QWidget()
         self.tab_2.setObjectName(u"tab_2")
+        self.layoutWidget = QWidget(self.tab_2)
+        self.layoutWidget.setObjectName(u"layoutWidget")
+        self.layoutWidget.setGeometry(QRect(40, 10, 281, 241))
+        self.gl_alarms = QGridLayout(self.layoutWidget)
+        self.gl_alarms.setObjectName(u"gl_alarms")
+        self.gl_alarms.setContentsMargins(0, 0, 0, 0)
+        self.timeEdit = QTimeEdit(self.tab_2)
+        self.timeEdit.setObjectName(u"timeEdit")
+        self.timeEdit.setGeometry(QRect(190, 260, 121, 22))
+        self.btn_addalarm = QPushButton(self.tab_2)
+        self.btn_addalarm.setObjectName(u"btn_addalarm")
+        self.btn_addalarm.setGeometry(QRect(70, 260, 75, 24))
         self.tabWidget.addTab(self.tab_2, "")
         self.tab_3 = QWidget()
         self.tab_3.setObjectName(u"tab_3")
@@ -108,7 +138,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(3)
+        self.tabWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -116,7 +146,14 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        self.lb_tehran.setText(QCoreApplication.translate("MainWindow", u"0:0:0", None))
+        self.lb_tehran_2.setText(QCoreApplication.translate("MainWindow", u"Tehran", None))
+        self.lb_tehran_3.setText(QCoreApplication.translate("MainWindow", u"Berlin", None))
+        self.lb_berlin.setText(QCoreApplication.translate("MainWindow", u"0:0:0", None))
+        self.lb_tehran_5.setText(QCoreApplication.translate("MainWindow", u"Washington", None))
+        self.lb_washington.setText(QCoreApplication.translate("MainWindow", u"0:0:0", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("MainWindow", u"World Clock", None))
+        self.btn_addalarm.setText(QCoreApplication.translate("MainWindow", u"Add", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainWindow", u"Alarm", None))
         self.label_stopwatch.setText(QCoreApplication.translate("MainWindow", u"0", None))
         self.btn_start_stopwatch.setText(QCoreApplication.translate("MainWindow", u"start", None))

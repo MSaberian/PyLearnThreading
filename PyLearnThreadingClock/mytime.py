@@ -24,6 +24,18 @@ class MyTime:
         result = MyTime(h_new, m_new, s_new)
         return result
 
+    def equal(self, other):
+        s_new = self.second - other.second
+        m_new = self.minute - other.minute
+        h_new = self.hour - other.hour
+        if s_new == 0 and m_new == 0 and h_new == 0:
+            return True
+        else:
+            return False
+
+    def toString(self):
+        return f'{self.hour}:{self.minute}:{self.second}'
+
     def sub(self, other):
         s_new = self.second - other.second
         m_new = self.minute - other.minute
@@ -33,7 +45,7 @@ class MyTime:
 
     @staticmethod
     def convert_second_to_time(second):
-        x = Time(0, 0, second)
+        x = MyTime(0, 0, second)
         return x
 
 
