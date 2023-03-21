@@ -15,6 +15,7 @@ from plyer.utils import platform
 from plyer import notification
 import qdarktheme
 from database import Database
+from fontTools.ttLib import TTFont
 
 
 class MainWindow(QMainWindow):
@@ -30,12 +31,18 @@ class MainWindow(QMainWindow):
         self.ui.btn_reset_timer.clicked.connect(self.reset_timer)
         self.ui.btn_stop_timer.clicked.connect(self.stop_timer)
         self.ui.btn_addalarm.clicked.connect(self.add_alarm)
-        # self.ui.timeEdit.setDisplayFormat('HH:MM:ss')
+        id = QFontDatabase.addApplicationFont("Seven Segment.ttf")
+        families = QFontDatabase.applicationFontFamilies(id)
+        self.ui.label_stopwatch.setFont(QFont(families[0], 40))
+        self.ui.tb_hour_timer.setFont(QFont(families[0], 40))
+        self.ui.tb_minute_timer.setFont(QFont(families[0], 40))
+        self.ui.tb_second_timer.setFont(QFont(families[0], 40))
         qdarktheme.setup_theme("dark")
         
         self.alarm_labels = []
         self.alarm_edits = []
         self.editable = True
+
         self.db = Database()
         self.thered_timer = TimerThread()
         self.thread_stopwatch = StopWatchThread()
@@ -47,6 +54,13 @@ class MainWindow(QMainWindow):
         self.thread_WorldClock.signal_show.connect(self.show_world_clock)
         self.thread_WorldClock.start()
         self.thread_alarm.start()
+
+    def closeEvent(self, event):
+        self.thread_WorldClock.terminate()
+        self.thread_alarm.terminate()
+        self.thread_stopwatch.terminate()
+        self.thered_timer.terminate()
+        event.accept()
 
     def read_from_database(self):
         alarms = self.db.get_alarms()
@@ -96,6 +110,7 @@ class MainWindow(QMainWindow):
         self.ui.btn_addalarm.setText('Save')
         self.ui.timeEdit.setStyleSheet("background-color: yellow; color: black")
         self.alarm_labels[row].setStyleSheet("background-color: yellow; color: black")
+        self.thread_alarm.Time_Alarms[row] = MyTime(self.thread_alarm.Time_Alarms[row].hour, self.thread_alarm.Time_Alarms[row].minute, self.thread_alarm.Time_Alarms[row].second)
         self.ui.timeEdit.setTime(QTime(self.thread_alarm.Time_Alarms[row].hour,self.thread_alarm.Time_Alarms[row].minute,self.thread_alarm.Time_Alarms[row].second))
         self.edit_alarm_id = id
         self.edit_alarm_row = row
@@ -123,15 +138,12 @@ class MainWindow(QMainWindow):
     def start_stopwatch(self):
         self.thread_stopwatch.start()
 
-    # @Slot
     def show_number_stopwatch(self):
         self.ui.label_stopwatch.setText(f'{self.thread_stopwatch.time.hour}:{self.thread_stopwatch.time.minute}:{self.thread_stopwatch.time.second}')
 
-    # @Slot    
     def reset_stopwatch(self):
         self.thread_stopwatch.reset()
 
-    # @Slot
     def stop_stopwatch(self):
         self.thread_stopwatch.terminate()
 
@@ -140,18 +152,13 @@ class MainWindow(QMainWindow):
             self.thered_timer.set_time(int(self.ui.tb_hour_timer.text()),int(self.ui.tb_minute_timer.text()),int(self.ui.tb_second_timer.text()))
             self.thered_timer.start()
 
-    # @Slot
     def show_time_timer(self):
         self.ui.tb_hour_timer.setText(str(self.thered_timer.time.hour))
         self.ui.tb_minute_timer.setText(str(self.thered_timer.time.minute))
         self.ui.tb_second_timer.setText(str(self.thered_timer.time.second))
         if self.thered_timer.time.second + self.thered_timer.time.minute + self.thered_timer.time.hour == 0:
             self.thered_timer.terminate()
-            notification.notify(
-                title='Clock',
-                message='Timer Alarm',
-                app_name='Clock',
-            )
+            notification.notify(title='Clock', message='Timer Alarm', app_name='Clock')
 
     def stop_timer(self):
         self.thered_timer.terminate()
