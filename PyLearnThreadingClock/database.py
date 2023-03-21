@@ -28,3 +28,12 @@ class Database:
             return True
         except:
             return False
+
+    def edit_alarm(self, second, id):
+        try:
+            query = f'UPDATE alarms SET time="{second}" WHERE id = {id}'
+            self.cursor.execute(query)
+            self.con.commit()
+            return True
+        except:
+            return False

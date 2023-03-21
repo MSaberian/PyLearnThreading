@@ -30,8 +30,12 @@ class MainWindow(QMainWindow):
         self.ui.btn_reset_timer.clicked.connect(self.reset_timer)
         self.ui.btn_stop_timer.clicked.connect(self.stop_timer)
         self.ui.btn_addalarm.clicked.connect(self.add_alarm)
+        # self.ui.timeEdit.setDisplayFormat('HH:MM:ss')
         qdarktheme.setup_theme("dark")
         
+        self.alarm_labels = []
+        self.alarm_edits = []
+        self.editable = True
         self.db = Database()
         self.thered_timer = TimerThread()
         self.thread_stopwatch = StopWatchThread()
@@ -43,16 +47,23 @@ class MainWindow(QMainWindow):
         self.thread_WorldClock.signal_show.connect(self.show_world_clock)
         self.thread_WorldClock.start()
         self.thread_alarm.start()
-        # self.thread_alarm.Time_Alarms.append(MyTime(0, 1, 2)) 
 
     def read_from_database(self):
         alarms = self.db.get_alarms()
-
+        self.alarm_labels = []
         for row in range(len(alarms)):
             self.add_alarm_to_grid(alarms,row)
 
     def add_alarm(self):
-        self.db.add_new_alarm(MyTime.convert_time_to_second(MyTime(self.ui.timeEdit.time().hour(), self.ui.timeEdit.time().minute(), self.ui.timeEdit.time().second())))
+        if not self.editable:
+            self.editable = True
+            self.ui.btn_addalarm.setText('Add')
+            self.ui.timeEdit.setStyleSheet('')
+            self.thread_alarm.Time_Alarms[self.edit_alarm_row] = MyTime(self.ui.timeEdit.time().hour(), self.ui.timeEdit.time().minute(), self.ui.timeEdit.time().second())
+            self.db.edit_alarm(self.thread_alarm.Time_Alarms[self.edit_alarm_row].convert_time_to_second(), self.edit_alarm_id)
+        else:
+            self.db.add_new_alarm(MyTime.convert_time_to_second(MyTime(self.ui.timeEdit.time().hour(), self.ui.timeEdit.time().minute(), self.ui.timeEdit.time().second())))
+        self.remove_alarm()
         self.read_from_database()
 
     def add_alarm_to_grid(self,alarms,row):
@@ -67,17 +78,31 @@ class MainWindow(QMainWindow):
         new_btn.setText('❌')
         new_btn.setMaximumWidth(50)
         new_btn_edit.setMaximumWidth(50)
-        # new_label.setStyleSheet("background-color: pink; color: red")
+        self.alarm_labels.append(new_label)
+        self.alarm_edits.append(new_btn_edit)
         
         self.ui.gl_alarms.addWidget(new_label, row, 0)
         self.ui.gl_alarms.addWidget(new_btn_edit, row, 1)
         self.ui.gl_alarms.addWidget(new_btn, row, 2)
 
-        # new_btn_edit.clicked.connect(partial(self.done_alarms,alarms[row][0]))
+        new_btn_edit.clicked.connect(partial(self.edit_alarms,row,alarms[row][0]))
         new_btn.clicked.connect(partial(self.remove_alarm,alarms[row][0]))
 
-    def remove_alarm(self,id):
-        self.db.remove_alarm(id)
+    def edit_alarms(self, row, id):
+        if self.editable:
+            self.editable = False
+        else:
+            return
+        self.ui.btn_addalarm.setText('Save')
+        self.ui.timeEdit.setStyleSheet("background-color: yellow; color: black")
+        self.alarm_labels[row].setStyleSheet("background-color: yellow; color: black")
+        self.ui.timeEdit.setTime(QTime(self.thread_alarm.Time_Alarms[row].hour,self.thread_alarm.Time_Alarms[row].minute,self.thread_alarm.Time_Alarms[row].second))
+        self.edit_alarm_id = id
+        self.edit_alarm_row = row
+
+    def remove_alarm(self,id = None):
+        if id != None:
+            self.db.remove_alarm(id)
         children = []
         for i in range(self.ui.gl_alarms.count()):
             child = self.ui.gl_alarms.itemAt(i).widget()
